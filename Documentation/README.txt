@@ -223,6 +223,7 @@ o  Expand the convenience chart bindings reference to allow for non-kvc
    bound graph rather than a key path mapping.
 o  Expand the series data collection to implement all point
    configuration object values.
+o  ERDonutChart convenience component.
 o  er... more junit tests.
 
 
