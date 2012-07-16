@@ -114,9 +114,7 @@ public class ERHighchartsRequestHandler extends WORequestHandler {
 			WOSession session = null;
 			
 			if (context._requestSessionID() != null) {
-				log.debug("Restoring session");
 				session = WOApplication.application().restoreSessionWithID(wosid, context);
-				log.debug("session ["+session.sessionID()+"] restored");
 			}
 			
 			try {

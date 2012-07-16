@@ -62,24 +62,18 @@ public class KVCAExtensionGraph implements NSKeyValueCoding, NSKeyValueCodingAdd
 	
 	@Override
 	public void takeValueForKeyPath(Object value, String keyPath) {
-		log.debug("KVCAExtension.takeValueForKeyPath: keyPath ["+keyPath+"]");
 		if (keyPath == null) {
 			return;
 		}
 
 		if(keyPath.contains(NSKeyValueCodingAdditions.KeyPathSeparator)){
-			log.debug("KVCAExtension.takeValueForKeyPath: keyPath has a dotta!");
 			String key = keyPath.substring(0, keyPath.indexOf(NSKeyValueCodingAdditions.KeyPathSeparator));
 			
-			log.debug("Key ["+key+"]");
-			
 			String nextPath = keyPath.substring( key.length() + NSKeyValueCodingAdditions.KeyPathSeparator.length() );
-			log.debug("Next Path ["+nextPath+"]");
 			
 			Object localObject = nodes.get(key);
 			
 			if(localObject==null){
-				log.debug("KVCAExtension.takeValueForKeyPath: no local object for key ["+key+"], creating an extension");
 
 				localObject = new KVCAExtensionGraph();
 				
@@ -89,19 +83,13 @@ public class KVCAExtensionGraph implements NSKeyValueCoding, NSKeyValueCodingAdd
 					|| NSKeyValueCodingAdditions.class.isAssignableFrom(localObject.getClass())
 					){
 
-				log.debug("KVCAExtension.takeValueForKeyPath: local object is of type ["+localObject.getClass().getName()+"]");
-				log.debug("KVCAExtension.takeValueForKeyPath: calling next path on local object ["+nextPath+"]");
-
 				((NSKeyValueCodingAdditions)localObject).takeValueForKeyPath(value, nextPath);
 				
 			}
 			
-			nodes.put(key, localObject);
-			//nodes.setObjectForKey(localObject, key);
-			
+			nodes.put(key, localObject);			
 			
 		}else{
-			log.debug("KVCAExtension.takeValueForKeyPath: no dotta! in key path, calling tvfk instead ["+keyPath+"]");
 			this.takeValueForKey(value, keyPath);//there is no next path, so try to store locally.
 		}
 	
@@ -109,17 +97,13 @@ public class KVCAExtensionGraph implements NSKeyValueCoding, NSKeyValueCodingAdd
 
 	@Override
 	public Object valueForKeyPath(String keyPath) {
-		log.debug("KVCAExtension.valueForKeyPath: keyPath = " + keyPath);
 		if (keyPath == null) {
 			return null;
 		}
 		if(keyPath.contains(NSKeyValueCodingAdditions.KeyPathSeparator)){
 			String key = keyPath.substring(0, keyPath.indexOf(NSKeyValueCodingAdditions.KeyPathSeparator));
 			
-			log.debug("Key ["+key+"]");
-			
 			String nextPath = keyPath.substring(  key.length() + NSKeyValueCodingAdditions.KeyPathSeparator.length() );
-			log.debug("Next Path ["+nextPath+"]");
 			
 			Object localObject = nodes.get(key);
 			
@@ -128,7 +112,6 @@ public class KVCAExtensionGraph implements NSKeyValueCoding, NSKeyValueCodingAdd
 			
 			if(localObject==null){
 				
-				log.debug("tried to find object for key ["+key+"] but came up trumps");
 				
 			}else{
 
@@ -143,12 +126,10 @@ public class KVCAExtensionGraph implements NSKeyValueCoding, NSKeyValueCodingAdd
 					returnValue = ((KVCAExtensionGraph)localObject).valueForKeyPath(nextPath);
 					
 				}else{
-					log.debug("the object is of type ["+localObject.getClass().getName()+"] but we've still got a next key path of ["+nextPath+"] returning null");	
 					returnValue = null;
 				}
 				
 			}
-			log.debug("returning ret value of ["+returnValue+"]");
 			
 			return returnValue;
 		}else{
