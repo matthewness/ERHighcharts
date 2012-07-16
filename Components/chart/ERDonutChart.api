@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wodefinitions>
+    <wo class="ERDonutChart" wocomponentcontent="false">    <binding name="innerSeriesKeyPath"/>
+        <validation message="'innerSeriesKeyPath' is a required binding.">
+            <unbound name="innerSeriesKeyPath"/>
+        </validation>
+        <binding name="graph"/>
+        <binding name="series"/>
+        <validation message="'series' is a required binding.">
+            <unbound name="series"/>
+        </validation>
+    <binding name="innerSeriesNameKeyPath"/>
+    <binding name="innerSeriesAmountKeyPath"/>
+    </wo>
+</wodefinitions>

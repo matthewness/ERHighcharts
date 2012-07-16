@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wodefinitions>
+    <wo class="ERPieChart" wocomponentcontent="false">    <binding name="graph"/>
+        <binding name="series"/>
+        <binding name="mappings"/>
+        <binding name="seriesNameKeyPath"/>
+        <binding name="seriesValueKeyPath"/>
+    </wo>
+</wodefinitions>

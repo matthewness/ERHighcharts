@@ -1,0 +1,11 @@
+<script type="text/javascript">
+  document.observe("dom:loaded", function(){
+  	var chart =  new Highcharts.Chart(
+<wo:str value="$chartString" escapeHTML = "$false" />
+    );
+  });
+</script>
+<wo:WOGenericContainer elementName = "div" id="$chartId" class="$^class" style="$chartStyle"></wo:WOGenericContainer>
+<wo:WOComponentContent></wo:WOComponentContent>
+
+
