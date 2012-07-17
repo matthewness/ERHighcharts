@@ -122,8 +122,9 @@ public class KVCAExtensionGraph implements NSKeyValueCoding, NSKeyValueCodingAdd
 				}else if (localObject instanceof List){
 					
 					
-				}else if( NSKeyValueCoding.class.isAssignableFrom(Object.class) ){//the object implements NSKVCA
-					returnValue = ((KVCAExtensionGraph)localObject).valueForKeyPath(nextPath);
+				}
+				else if( NSKeyValueCodingAdditions.class.isAssignableFrom(localObject.getClass()) ){//the object implements NSKVCA
+					returnValue = ((NSKeyValueCodingAdditions)localObject).valueForKeyPath(nextPath);
 					
 				}else{
 					returnValue = null;
