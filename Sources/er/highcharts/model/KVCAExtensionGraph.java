@@ -154,7 +154,6 @@ public class KVCAExtensionGraph implements NSKeyValueCoding, NSKeyValueCodingAdd
 	 */
 	public void apply(KVCAExtensionGraph supp) {
 		if(supp!=null){
-			//this.nodes.putAll(supp.nodes);//for now we just do a put all, but it really should be smarter than that.
 			
 			Set<String> keys = supp.nodes.keySet();
 			for (String key : keys){
