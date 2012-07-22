@@ -60,7 +60,6 @@ public class KVCAExtensionGraph implements NSKeyValueCoding, NSKeyValueCodingAdd
 		super();
 	}
 	
-	@Override
 	public void takeValueForKeyPath(Object value, String keyPath) {
 		if (keyPath == null) {
 			return;
@@ -95,7 +94,6 @@ public class KVCAExtensionGraph implements NSKeyValueCoding, NSKeyValueCodingAdd
 	
 	}
 
-	@Override
 	public Object valueForKeyPath(String keyPath) {
 		if (keyPath == null) {
 			return null;
@@ -140,12 +138,10 @@ public class KVCAExtensionGraph implements NSKeyValueCoding, NSKeyValueCodingAdd
 
 	}
 
-	@Override
 	public void takeValueForKey(Object value, String key) {
 		nodes.put(key, value);
 	}
 
-	@Override
 	public Object valueForKey(String key) {
 		return nodes.get(key);
 	}
