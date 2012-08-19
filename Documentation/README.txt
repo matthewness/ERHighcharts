@@ -224,8 +224,6 @@ o  Expand the convenience chart bindings reference to allow for non-kvc
 o  Expand the series data collection to implement all point
    configuration object values.
 o  ERDonutChart convenience component.
-o  er... more junit tests.
-
 
 ###################
 #
