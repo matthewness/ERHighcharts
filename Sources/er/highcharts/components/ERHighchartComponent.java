@@ -169,6 +169,35 @@ public abstract class ERHighchartComponent extends ERXComponent {
 				}
 				series.takeValueForKeyPath(obj.valueForKeyPath(dataPath), "data");
 				seriesList.add(series);
+				
+
+				String pointStartPath = "pointStart";
+				if (mappings != null && mappings.get("pointStart") != null) {
+					pointStartPath = mappings.get("pointStart");
+				}
+				Object ps = obj.valueForKeyPath(pointStartPath);
+				if(ps !=null){
+					series.takeValueForKeyPath(ps, "pointStart");					
+				}
+
+				String pointIntervalPath = "pointInterval";
+				if (mappings != null && mappings.get("pointInterval") != null) {
+					pointIntervalPath = mappings.get("pointInterval");
+				}
+				Object pi = obj.valueForKeyPath(pointIntervalPath);
+				if(pi !=null ){
+					series.takeValueForKeyPath(pi, "pointInterval");					
+				}
+
+				String typePath = "type";
+				if (mappings != null && mappings.get("type") != null) {
+					typePath = mappings.get("type");
+				}
+				Object type = obj.valueForKeyPath(typePath);
+				if(type != null){
+					series.takeValueForKeyPath(type, "type");					
+				}
+
 
 			}
 			graph.takeValueForKeyPath(seriesList, "series");
