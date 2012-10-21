@@ -121,14 +121,10 @@ public class ERHighchart extends ERHighchartComponent {
 	 */
 	public String chartString(){
 		
-		KVCAExtensionGraph graph = boundGraph();
+		KVCAExtensionGraph graph = graph();
 		
 		String ret = "ERROR";
 
-		if(graph==null){
-			return ret;
-		}
-		
 		//set the HTML element target
 		graph.takeValueForKeyPath(chartId(), "chart.renderTo");
 		graph.takeValueForKeyPath(true, "chart.animation");
@@ -145,7 +141,11 @@ public class ERHighchart extends ERHighchartComponent {
 		if(transcodeURL==null){
 			graph.takeValueForKeyPath(localTranscodeURL(), "exporting.url");		
 		}
-				
+			
+		
+	//	graph = fromRawBindings(graph);
+
+		
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);

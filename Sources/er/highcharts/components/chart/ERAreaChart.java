@@ -33,27 +33,4 @@ public class ERAreaChart extends ERHighchartComponent {
         super(context);
     }
 
-	/**
-	 * The graph. The "chart.type" is explicitly set to "area".
-	 * Attempts to build the "area" section of the graph by applying the bound
-	 * "series" objects and any "mappings" if present. Finally, it applies
-	 * the bound "graph" object to it, to ensure the calling component can
-	 * override any Highcharts options.
-	 * 
-	 * @return a {@code KVCAExtensionGraph} object representing the Area section of a highcharts graph.
-	 */
-	public KVCAExtensionGraph graph() {
-		KVCAExtensionGraph graph = new KVCAExtensionGraph();
-
-		// set the defaults, and allow the binding to override
-		graph.takeValueForKeyPath("area", "chart.type");
-
-		graph = buildSeries(graph);
-
-		// apply the bound graph last, so it overrides any previously set content.
-		graph.apply(boundGraph());
-
-		return graph;
-	}
-
 }

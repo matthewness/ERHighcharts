@@ -3,11 +3,13 @@ package er.highcharts.components;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.webobjects.appserver.WOContext;
+import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSKeyValueCodingAdditions;
 
@@ -32,6 +34,11 @@ public abstract class ERHighchartComponent extends ERXComponent {
 	 * Default serial version id
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Standard Logger
+	 */
+	private static Logger log = Logger.getLogger(ERHighchartComponent.class);
 
 	/**
 	 * Binding for the {@code KVCAExtensionGraph} graph object
@@ -99,6 +106,18 @@ public abstract class ERHighchartComponent extends ERXComponent {
 		return false;
 	}
 	
+	
+	public KVCAExtensionGraph graph() {
+		KVCAExtensionGraph graph = new KVCAExtensionGraph();
+
+		graph = buildSeries(graph);
+
+		graph.apply(boundGraph());
+		
+		graph = fromRawBindings(graph);
+		
+		return graph;
+	}
 	/**
 	 * Convenience binding getter for the {@code KVCAExtensionGraph} bound object
 	 * @return
@@ -171,38 +190,51 @@ public abstract class ERHighchartComponent extends ERXComponent {
 				seriesList.add(series);
 				
 
-				String pointStartPath = "pointStart";
-				if (mappings != null && mappings.get("pointStart") != null) {
-					pointStartPath = mappings.get("pointStart");
-				}
-				Object ps = obj.valueForKeyPath(pointStartPath);
+				Object ps = keyPathForBoundName("pointStart", mappings, obj);
 				if(ps !=null){
 					series.takeValueForKeyPath(ps, "pointStart");					
 				}
 
-				String pointIntervalPath = "pointInterval";
-				if (mappings != null && mappings.get("pointInterval") != null) {
-					pointIntervalPath = mappings.get("pointInterval");
-				}
-				Object pi = obj.valueForKeyPath(pointIntervalPath);
+				Object pi = keyPathForBoundName("pointInterval", mappings, obj);
 				if(pi !=null ){
 					series.takeValueForKeyPath(pi, "pointInterval");					
 				}
-
-				String typePath = "type";
-				if (mappings != null && mappings.get("type") != null) {
-					typePath = mappings.get("type");
-				}
-				Object type = obj.valueForKeyPath(typePath);
+	
+				Object type = keyPathForBoundName("type", mappings, obj);
 				if(type != null){
 					series.takeValueForKeyPath(type, "type");					
 				}
-
 
 			}
 			graph.takeValueForKeyPath(seriesList, "series");
 		}
 		return graph;
+	}
+	
+	/**
+	 * Safely tries to add values to the graph from either mappings or standard vfkp.
+	 * @param name
+	 * @param mappings
+	 * @param obj
+	 * @return
+	 */
+	private Object keyPathForBoundName(String name, NSDictionary<String, String> mappings, NSKeyValueCodingAdditions obj){
+		if(ERXStringUtilities.stringIsNullOrEmpty(name)){
+			return null;
+		}
+		try{
+			String namePath = name;
+			if (mappings != null && mappings.get(name) != null) {
+				namePath = mappings.get(name);
+			}
+			Object value = obj.valueForKeyPath(namePath);
+			return value;
+		}catch(Exception e){
+			if(log.isDebugEnabled()){
+				e.printStackTrace();				
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -219,5 +251,24 @@ public abstract class ERHighchartComponent extends ERXComponent {
 		return (String)valueForBinding(SERIES_DATA_KEYPATH_BINDING);
 	}
 	
+
+	/**
+	 * Looks for raw Highcharts JS bindings and applies them.
+	 * @param graph
+	 * @return
+	 */
+	public KVCAExtensionGraph fromRawBindings(KVCAExtensionGraph graph){
+		NSArray<String> allKeys = this.bindingKeys();
+		for (int i=0; i<allKeys.count(); i++){
+			String key = allKeys.objectAtIndex(i);
+			if(!ERXStringUtilities.stringIsNullOrEmpty(key) && key.indexOf(".")>0){
+				Object value = this.valueForBinding(key);
+				System.out.println("key ["+i+"] ["+key+"] ["+this.valueForBinding(key)+"]");
+				graph.takeValueForKeyPath(value, key);
+			}
+		}
+		return graph;
+	}
+
 		
 }

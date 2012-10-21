@@ -33,26 +33,5 @@ public class ERLineChart extends ERHighchartComponent {
         super(context);
     }
 
-	/**
-	 * The graph. The "chart.type" is explicitly set to "line".
-	 * Attempts to build the "line" section of the graph by applying the bound
-	 * "series" objects and any "mappings" if present.
-	 * Finally, it applies the bound "graph" object to it, to ensure the calling 
-	 * component can override any Highcharts options.
-	 * 
-	 * @return a {@code KVCAExtensionGraph} object representing the Line section of a highcharts graph.
-	 */
-	public KVCAExtensionGraph graph() {
-		KVCAExtensionGraph graph = new KVCAExtensionGraph();
-		
-		//set the defaults, and allow the binding to override
-		graph.takeValueForKeyPath("line", "chart.type");
-		
-		graph = buildSeries(graph);
-		
-		//apply the bound graph last, so it overrides any previously set content.
-		graph.apply(boundGraph());
-		
-		return graph;
-	}
+
 }
