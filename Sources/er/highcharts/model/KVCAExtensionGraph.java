@@ -30,17 +30,16 @@ public class KVCAExtensionGraph implements NSKeyValueCoding, NSKeyValueCodingAdd
 	private static Logger log = Logger.getLogger(KVCAExtensionGraph.class);
 	
 	/**
-	 * The nodes. We tell Jackson to ignore this property,
-	 * as the @JsonUnwrapped annotation doesn't play with Map objects.
-	 * Instead, we use the @JsonAnyGetter annotation in a separate object
-	 * in this class: {@code #erHighchartsAnyGetterPolicy}
-	 * 
+	 * The nodes. We tell Jackson to ignore this property, as the
+	 * {@code JsonUnwrapped} annotation doesn't play with Map objects. Instead,
+	 * we use the {@code JsonAnyGetter} annotation in a separate object in this
+	 * class: {@code #erHighchartsAnyGetterPolicy}
 	 */
 	@JsonIgnore
 	public Map<String, Object> nodes = new HashMap<String, Object>();
 
 	/**
-	 * The solution to the @JsonUnwrapped issues with Maps.
+	 * The solution to the {@code JsonUnwrapped} issues with Maps.
 	 * 
 	 * This method is called <code>erHighchartsAnyGetterPolicy</code> as it's unlikely
 	 * a user or process will be setting objects on this object with that key.
