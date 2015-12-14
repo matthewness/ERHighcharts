@@ -104,4 +104,59 @@
 			</classpath>
 		</wocompile>
 	</target>
+
+	<!-- JUnit testing -->
+	<property name="src.tests" value="Tests" />
+	<property name="bin.tests" value="bin-tests" />
+	<property name="junit.results" value="junit-results" />
+	<property name="junit.report" value="junit-report" />
+
+	<target name="clean.tests">
+		<delete dir="${bin.tests}" />
+		<delete dir="${junit.results}" />
+		<delete dir="${junit.report}" />
+	</target>
+
+	<typedef name="wopath" classname="org.objectstyle.woproject.ant.WOPath" />
+	<wopath id="testing.classpath">
+		<frameworks root="User" eclipse="true" />
+		<frameworks root="Local" eclipse="true" />
+		<frameworks root="System" eclipse="true" />
+	</wopath>
+
+	<target name="compile.tests">
+		<mkdir dir="${bin.tests}" />
+		<javac srcdir="${src.tests}" destdir="${bin.tests}" debug="true">
+			<classpath refid="testing.classpath" />
+			<classpath>
+				<pathelement location="bin" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="junit" depends="init.build, compile.tests">
+		<mkdir dir="junit-results" />
+		<junit haltonfailure="false" fork="true" forkmode="once" dir="${dest.dir}/${project.name}.framework" printsummary="true" failureproperty="test.failed">
+			<classpath refid="testing.classpath" />
+			<classpath>
+				<pathelement location="bin" />
+				<pathelement location="${bin.tests}" />
+			</classpath>
+			<formatter type="brief" usefile="false" />
+			<formatter type="xml" />
+			<batchtest todir="${junit.results}">
+				<fileset dir="${bin.tests}">
+					<include name="**/*Test.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<mkdir dir="${junit.report}" />
+		<junitreport todir="${junit.report}">
+			<fileset dir="${junit.results}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${junit.report}" />
+		</junitreport>
+		<fail if="test.failed" />
+	</target>
 </project>
